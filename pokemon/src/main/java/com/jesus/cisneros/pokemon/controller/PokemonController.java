@@ -2,6 +2,7 @@ package com.jesus.cisneros.pokemon.controller;
 
 import com.jesus.cisneros.pokemon.model.Pokemon;
 import com.jesus.cisneros.pokemon.service.PokemonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +26,13 @@ public class PokemonController {
         return pokemonService.obtenerPorId(id).orElse(null);
     }
 
-    @PostMapping
-    public Pokemon crear(@RequestBody Pokemon pokemon) {
+    @PostMapping("/")
+    public Pokemon crear(@Valid @RequestBody Pokemon pokemon) {
         return pokemonService.crear(pokemon);
     }
 
     @PutMapping("/{id}")
-    public Pokemon actualizarCompleto(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+    public Pokemon actualizarCompleto(@PathVariable Long id, @Valid@RequestBody Pokemon pokemon) {
         return pokemonService.actualizarCompleto(id, pokemon);
     }
 

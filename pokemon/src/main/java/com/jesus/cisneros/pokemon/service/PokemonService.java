@@ -1,5 +1,6 @@
 package com.jesus.cisneros.pokemon.service;
 
+import com.jesus.cisneros.pokemon.exception.ResourceNotFoundException;
 import com.jesus.cisneros.pokemon.model.Pokemon;
 import com.jesus.cisneros.pokemon.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class PokemonService {
     }
 
     public Optional<Pokemon> obtenerPorId(Long id){
+
+        if(!pokemonRepository.existsById(id)){
+            throw new ResourceNotFoundException("Pokemon no encontrado, ID: " + id);
+        }
+
         return pokemonRepository.findById(id);
     }
 
@@ -27,6 +33,11 @@ public class PokemonService {
     }
 
     public Pokemon actualizarCompleto(Long id, Pokemon nuevo) {
+
+        if(!pokemonRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se puede actualizar, pokemon no encontrado, ID: " + id);
+        }
+
         return pokemonRepository.findById(id).map(pokemon -> {
             pokemon.setNombre(nuevo.getNombre());
             pokemon.setTipo(nuevo.getTipo());
@@ -40,6 +51,11 @@ public class PokemonService {
     }
 
     public Pokemon actualizarParcial(Long id, Pokemon parcial) {
+
+        if(!pokemonRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se puede actualizar, pokemon no encontrado, ID: " + id);
+        }
+
         return pokemonRepository.findById(id).map(pokemon -> {
             if (parcial.getNombre() != null) pokemon.setNombre(parcial.getNombre());
             if (parcial.getTipo() != null) pokemon.setTipo(parcial.getTipo());
@@ -53,6 +69,9 @@ public class PokemonService {
     }
 
     public void eliminar(Long id) {
+        if(!pokemonRepository.existsById(id)){
+            throw new ResourceNotFoundException("No se puede eliminar, pokemon no encontrado, ID: " + id);
+        }
         pokemonRepository.deleteById(id);
     }
 
